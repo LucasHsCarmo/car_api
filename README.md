@@ -49,3 +49,9 @@ poetry run fastapi dev car_api/app.py
 http://127.0.0.1:8000
 http://127.0.0.1:8000/docs
 ```
+
+## Install pydantic
+
+```sh
+poetry add pydantic
+```
