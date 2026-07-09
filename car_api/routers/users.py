@@ -26,22 +26,22 @@ async def create_user(user: UserSchema):
         response_model=UserListPublicSchema
 )
 async def list_users():
-    return {
-        "users": [
-           {
-            "id": 1,
-            "username": "john.doe",
-            "email": "john.doe@example.com"
-           },
-           {
-            "id": 2,
-            "username": "jane.smith",
-            "email": "jane.smith@example.com"
-           },
-           {
-            "id": 3,
-            "username": "bob.johnson",
-            "email": "bob.johnson@example.com"
-           },
-        ]
-    }
+    return { 'users': USERS }
+
+@router.put(
+    path="/{user_id}",
+    status_code=status.HTTP_201_CREATED,
+    response_model=UserPublicSchema
+)
+async def update_user(user_id: int, user: UserSchema):
+    user_with_id = UserPublicSchema(**user.model_dump(), id=user_id)
+    USERS[user_id - 1] = user_with_id
+    return user_with_id
+
+@router.delete(
+    path="/{user_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+async def delete_user(user_id: int):
+    del USERS[user_id - 1]
+    return { 'message': f'User with id {user_id} has been deleted.' }
